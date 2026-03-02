@@ -19,7 +19,7 @@ interface SewTextViewProps {
 export function SewTextView(props: SewTextViewProps) {
   return (
     <div className="flex flex-1 relative grow shrink overflow-hidden">
-      <pre className="text-sm bg-slate-900 flex-1 p-4 rounded-xl overflow-scroll">{props.text.join('\n')}</pre>
+      <pre className="text-sm bg-zinc-900 flex-1 p-4 rounded-xl overflow-scroll">{props.text.join('\n')}</pre>
       {props.copyButton &&
         (
           <button className="absolute top-2 right-2 bg-transparent!">
@@ -38,7 +38,7 @@ interface SewTextInputProps {
 export function SewTextInput(props: SewTextInputProps) {
   return (
     <textarea
-      className="text-sm bg-slate-900 flex-1 p-4 rounded-xl overflow-scroll h-full w-full"
+      className="text-sm bg-zinc-900 flex-1 p-4 rounded-xl overflow-scroll h-full w-full"
       value={props.text}
       onChange={(e) => props.onChange(e.target.value)}
       placeholder="paste your input here"
@@ -78,7 +78,7 @@ export function SewBlock(props: SewBlockProps) {
             []}
         />
       </div>
-      <div className="flex shrink flex-row items-center p-2 px-4 bg-slate-900 rounded-xl">
+      <div className="flex shrink flex-row items-center p-2 px-4 bg-zinc-900 rounded-xl">
         {!props.static && (
           <>
             <span>Program:&nbsp;&nbsp;</span>

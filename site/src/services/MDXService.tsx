@@ -8,7 +8,7 @@ function CustomH3(props: PropsWithChildren) {
   return (
     <>
       <h3 className="mb-0!">{props.children}</h3>
-      <div className="h-0.5 bg-slate-700 w-full mb-4" />
+      <div className="h-0.5 bg-zinc-700 w-full mb-4" />
     </>
   );
 }
