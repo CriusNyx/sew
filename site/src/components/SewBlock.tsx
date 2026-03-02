@@ -19,8 +19,8 @@ interface SewTextViewProps {
 
 export function SewTextView(props: SewTextViewProps) {
   return (
-    <div className="flex flex-1 relative grow shrink overflow-hidden">
-      <pre className="text-sm bg-zinc-900 flex-1 p-4 rounded-xl overflow-scroll">
+    <div className="flex flex-1 fira-mono relative grow shrink overflow-hidden">
+      <pre className="text-sm bg-zinc-900 flex-1 p-4 rounded-xl overflow-scroll whitespace-pre">
         {props.text.join("\n")}
       </pre>
       {props.copyButton && (
@@ -40,7 +40,7 @@ interface SewTextInputProps {
 export function SewTextInput(props: SewTextInputProps) {
   return (
     <textarea
-      className="text-sm bg-zinc-900 flex-1 p-4 rounded-xl overflow-scroll h-full w-full"
+      className="text-sm bg-zinc-900 fira-mono flex-1 p-4 rounded-xl overflow-scroll h-full w-full whitespace-pre"
       value={props.text}
       onChange={(e) => props.onChange(e.target.value)}
       placeholder="paste your input here"
