@@ -53,6 +53,9 @@ I created sew because I wanted a tool that replaced the python scripts I was usi
 strings in my clipboard. I wanted to create something that had a nice grammar, was interactive in 
 the command line, and had a user experience with hotkeys, similar to nano.
 
+You can run sew using the command `sew --clipboard` to automatically load your clipboard as input. 
+Then you can write the output back to your clipboard using `ctrl+x`
+
 Let's look at some things it can do.
 
 ### Convert markdown to HTML
@@ -78,13 +81,6 @@ Let's look at some things it can do.
 ### Or JSON
 
 <SewBlock input={csv1} program={"lines | (split(',') | quote | join(',\\n')) | indent(2) | embed('[\\n', '\\n]') | join(',\n')"}/>
-
-## Okay. But why bother learning this?
-
-The way I use sew most often is by using the `--clipboard` arg to pass in my input. Then I use 
-`ctrl+x` to copy the output back to the clipboard.
-
-I also use this in my fish config to initialize parts of my environment.
 
 # Let's break it down
 
@@ -263,6 +259,6 @@ This example makes use of a sub expression `(split(',') | tag('li') | join)`. Th
 
 You can fiddle with the interactive widget on the homepage to try using sew now. See <Link to={'/'}>here</Link>.
 
-You can check out the docs for sew <Link to={'/'}>here</Link> to learn more about what methods it supports.
+You can check out the docs for sew <Link to={'/docs'}>here</Link> to learn more about what methods it supports.
 
-Or you can consider downloading and compiling sew from the git repo.
+Or you can consider downloading and compiling sew from the git repo [here](https://github.com/CriusNyx/sew/).
