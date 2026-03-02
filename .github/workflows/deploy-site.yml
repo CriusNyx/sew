@@ -40,6 +40,7 @@ jobs:
       - name: Build
         run: |
           cd site
+          deno install
           deno run build
       - name: Setup Pages
         uses: actions/configure-pages@v5
