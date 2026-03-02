@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>sew.core</AssemblyName>
+    <TargetName>sew.core</TargetName>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <NodeApiAssemblyJSModuleType>commonjs</NodeApiAssemblyJSModuleType>
+    <PublishTrimmed>true</PublishTrimmed>
+    <SelfContained>true</SelfContained>
+    <MSBuildEnableWorkloadResolver>false</MSBuildEnableWorkloadResolver>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.9.1" />
+    <PackageReference Include="CriusNyx.Result" Version="0.0.9" />
+    <PackageReference Include="CriusNyxUtil" Version="0.0.25" />
+    <PackageReference Include="Microsoft.JavaScript.NodeApi" Version="0.9.19" />
+    <PackageReference Include="Microsoft.JavaScript.NodeApi.Generator" Version="0.9.19" />
+    <PackageReference Include="Superpower" Version="3.1.0" />
+  </ItemGroup>
+</Project>

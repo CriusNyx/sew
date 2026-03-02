@@ -1,0 +1,268 @@
+export const markdown1 = `# What is Sew?
+
+Sew is an interactive command line tool 
+that lets you write small string 
+manipulation programs and see your 
+results in real time. Like any good CLI 
+tool it also supports input files and 
+piped input.
+
+I created sew because I wanted a tool 
+that replaced the python scripts I was 
+using the manipulate strings in my 
+clipboard. I wanted to create something 
+that had a nice grammar, was interactive 
+in the command line, and had a user 
+experience with hotkeys, similar to nano.
+
+Let's look at some things it can do.`
+
+export const json1 = `{
+  "home": "/home/rjr",
+  "scripts": "/home/rjr/scripts",
+  "projects": "/home/rjr/Projects",
+  "dotnet": "/home/rjr/Projects/dotnet",
+  "sew": "/home/rjr/Projects/dotnet/sew",
+  "rust": "/home/rjr/Projects/rust",
+  "csutil": "/home/rjr/Projects/dotnet/CriusNyxUtil",
+  "sol": "/home/rjr/Projects/dotnet/sol",
+  "diver": "/home/rjr/Projects/dotnet/Diver",
+  "binding": "/home/rjr/Projects/dotnet/binding",
+  "node": "/home/rjr/Projects/Node",
+  "inkx": "/home/rjr/Projects/Node/inkx"
+}`
+
+export const csv1 = `Read,The Three Body Problem,Lin Cixin
+Read,The Buffalo Hunter Hunter,Stephen Graham Jones
+Read,Homage to Catalonia,George Orwell
+Read,The Glass Castle,Jeannette Walls
+Read,The Invisible Life of Addie Larue,V.E. Schwab
+Read,The Peace to End All Peace,David Fromkin
+Read,Anxious People,Fredrik Backman
+Read,Zuangzi,Zuangzi
+Read,A Heartbreaking Work of Staggering Genius,Dave Eggers
+Reading,The Dark Forest,Lin Cixin
+Suggested,Everything is Tuberculosis,John Green`
+
+# What is Sew?
+
+Sew is an interactive command line tool that lets you write small string manipulation programs and 
+see your results in real time. Like any good CLI tool it also supports input files and piped input.
+
+I created sew because I wanted a tool that replaced the python scripts I was using the manipulate 
+strings in my clipboard. I wanted to create something that had a nice grammar, was interactive in 
+the command line, and had a user experience with hotkeys, similar to nano.
+
+Let's look at some things it can do.
+
+### Convert markdown to HTML
+
+<SewBlock input={markdown1} program="paragraphs(where(starts('#'), /#\s*(.*)/ '<h1>$1</h1>', else: tag('p', :nl)))"/>
+
+### Convert JSON to environment variables
+
+<SewBlock input={json1} program={"trim('{}') | lines(some | /\\\"(.*)\\\":\\s*\\\"(.*)\\\",?/ \"export $1=\\\"$2\\\"\")"}/>
+
+### Or CSharp source code
+
+<SewBlock input={json1} program={"trim('{}') | lines(some | /\\\"(.*)\\\":\\s*\\\"(.*)\\\",?/ \"public const string $1=\\\"$2\\\";\")"}/>
+
+### Or Javascript source code
+
+<SewBlock input={json1} program={"trim('{}') | lines(some | /\\\"(.*)\\\":\\s*\\\"(.*)\\\",?/ \"const $1=\\\"$2\\\";\")"}/>
+
+### Turn a CSV into HTML
+
+<SewBlock input={csv1} program={"lines((split(',') | tag('li') | join) | tag('tr', :nl))"}/>
+
+### Or JSON
+
+<SewBlock input={csv1} program={"lines | (split(',') | quote | join(',\\n')) | indent(2) | embed('[\\n', '\\n]') | join(',\n')"}/>
+
+## Okay. But why bother learning this?
+
+The way I use sew most often is by using the `--clipboard` arg to pass in my input. Then I use 
+`ctrl+x` to copy the output back to the clipboard.
+
+I also use this in my fish config to initialize parts of my environment.
+
+# Let's break it down
+
+Sew programs are made out of expressions that evaluate to functions. They're separated by pipes. 
+For example, the following program splits your source code into lines, quotes them, and then joins 
+them back together. The `:double` flag sets to double quotes instead of single.
+
+<SewExample input={markdown1} program='lines | quote(:double) | join'/>
+
+This will do the following the the input.
+
+- Convert the input into a list, separated by newline characters.
+- Wrap each element in the list in quotation marks.
+- Join the elements back together with newline characters.
+
+Lines also has an overload that takes in the center part, and joins them automatically.
+
+<SewExample input={markdown1} program='lines(quote(:double))'/>
+
+We can also join the lines with a comma and a newline.
+
+<SewExample input={markdown1} program="lines | quote(:double) | join(',\n')"/>
+
+Or by passing a joiner to lines
+
+<SewExample input={markdown1} program="lines(quote(:double), joiner: ',\n')"/>
+
+We can also use `tag` to wrap things in an html tag instead of quoting them.
+
+<SewExample input={markdown1} program="lines(tag('p'))"/>
+
+Or `embed` to explicity specify the left and right additions.
+
+<SewExample input={markdown1} program={"lines(embed('[', ']'))"}/>
+
+### Filters and Transformers
+
+Functions in Sew fall into one of two categories. Filters that return true if a string matches some 
+condition and transformers that modify the input list and return a new list of strings. The previous 
+examples all show transformer functions.
+
+For example, we filter out only lines that start with the `#` symbol using the following program.
+
+<SewExample input={markdown1} program="lines(has('#'))"/>
+
+Or we can filter for lines that don't have the `#` symbol using the `!` operator.
+
+<SewExample input={markdown1} program="lines(!has('#'))"/>
+
+The `!` operator just inverts the output of the filter.
+
+We can also apply a function only to lines that match a filter using the `where` function. The first
+parameter for `where` is a filter to apply, and the second parameter is a transformer function to 
+apply. The following program will quote only lines that start with the `#` symbol.
+
+<SewExample input={markdown1} program="lines(where(starts('#'), quote))"/>
+
+We can pass a function to the `else` parameter of where to apply a different function to lines that 
+don't match.
+
+<SewExample input={markdown1} program="lines(where(starts('#'), quote, else: quote(:single)))"/>
+
+We can also filter out empty strings using the `some` filter.
+
+<SewExample input={markdown1} program="lines(some)"/>
+
+Or we can keep only empty lines using the none filter.
+
+<SewExample input={markdown1} program="lines(none)"/>
+
+For example, the following replaces empty lines with empty strings for JSX.
+
+<SewExample input={markdown1} program={"lines(where(none, embed('{\"','\\\\n\"}')))"}/>
+
+### Regex
+
+You can also use regex expressions to perform filters.
+
+The following keeps lines that start with `#` using a regex expression.
+
+<SewExample input={markdown1} program={"lines(/#/)"}/>
+
+We can also replace the contents of the regex by following it with a string.
+
+The following expression replaces lines that start with `#` with h1 tags. 
+`$1` is replaced with group one in the regex.
+
+<SewExample input={markdown1} program={"lines(/#\\s*(.*)/ '<h1>$1</h1>')"}/>
+
+We can also apply an expression to anything that matches a particular regex expression.
+
+The following wraps all words in single quotation marks
+
+<SewExample input={markdown1} program={"/\\w+/(quote(:single))"}/>
+
+### Sub expressions
+
+We can create sub expressions by wrapping an expression in parentheses.
+
+For example, we want to apply a different HTML tag to the elements of the CSV then we do to the 
+lines.
+
+The following sub expression takes a single string, splits it by commas, wraps each element in a 
+`li` tag, joins them back together, and then wraps the output in a `tr` tag.
+
+`(split(',') | tag('li') | join | tag('tr', :nl))`
+
+We can pipe the output of `lines` to it to apply the sub expression to each line individually.
+
+<SewExample input={csv1} program={"lines | (split(',') | tag('li') | join | tag('tr', :nl)) | join('\\n')"}/>
+
+# Breakdowns
+
+With all of this knowledge we can finally break down the examples at the beginning of this blog post.
+
+### Convert markdown to HTML
+
+* `paragraphs` splits the input into paragraphs and applies the inner expression to each paragraph.
+  * Can be abbreviated `p`
+* `where` applies the regex expression to lines that match the filter, and the else expression to everything else.
+  * Can be abbreviated `w`
+* `starts('#')` filters for only lines that start with hash.
+* `/#\s*(.*)/ '<h1>$1</h1>'` replaces lines that match the regex with the string on the right.
+* `else:` Specifies the function to apply to everything that doesn't match.
+* `tag('p', :nl)` Wraps things in a p tag, and moves them to a newline.
+
+<SewExample input={markdown1} program="paragraphs(where(starts('#'), /#\s*(.*)/ '<h1>$1</h1>', else: tag('p', :nl)))"/>
+
+This whole program can be abbreviated to the following.
+
+`p(w(starts('#'), /#\s*(.*)/ '<h1>$1</h1>', else: tag('p', :nl)))`
+
+### Convert JSON to environment variables
+
+* `trim('{}')` removes the curly braces on the start and bottom.
+* `lines` splits a program into lines. If we pass an expression as a parameter it will apply the expression to each line, then join them.
+  * Can be abbreviated `l`
+* `some` removes all empty lines.
+* `/\"(.*)\":\s*\"(.*)\",?/` is a regex expression that matches the format of the JSON file.
+* `"export $1=\\\"$2\\\"\"` is the format to replace with. $1 and $2 match the groups in the regex expression.
+
+<SewExample input={json1} program={"trim('{}') | lines(some | /\\\"(.*)\\\":\\s*\\\"(.*)\\\",?/ \"export $1=\\\"$2\\\"\")"}/>
+
+### Or CSharp source code
+
+This is the same as the previous. The format string at the end is just different.
+
+<SewExample input={json1} program={"trim('{}') | lines(some | /\\\"(.*)\\\":\\s*\\\"(.*)\\\",?/ \"public const string $1=\\\"$2\\\";\")"}/>
+
+### Or Javascript source code
+
+Same as above.
+
+<SewExample input={json1} program={"trim('{}') | lines(some | /\\\"(.*)\\\":\\s*\\\"(.*)\\\",?/ \"const $1=\\\"$2\\\";\")"}/>
+
+### Turn a CSV into HTML
+
+* `split(',')` Splits the input with a comma.
+* `join` Joins whe expression with newlines.
+* `:nl` This flag puts the inside of the html tag in a new line.
+
+This example makes use of a sub expression `(split(',') | tag('li') | join)`. This applies to the elements that are separated by commas.
+
+<SewExample input={csv1} program={"lines((split(',') | tag('li') | join) | tag('tr', :nl))"}/>
+
+### Or JSON
+
+* `quote` wraps everything in double quotes.
+* `indent(2)` applies the specified spaces to the text. Defaults to 2.
+* `embed('[\n', '\n]')` embeds the string between the specified parameters.
+* `join(',\n')` same as before, but we specified the substring to use to join the text.
+
+<SewExample input={csv1} program={"lines | (split(',') | quote | join(',\\n')) | indent(2) | embed('[\\n', '\\n]') | join(',\\n')"}/>
+
+# What next?
+
+You can fiddle with the interactive widget on the homepage to try using sew now. See <Link to={'/'}>here</Link>.
+
+You can check out the docs for sew <Link to={'/'}>here</Link> to learn more about what methods it supports.
+
+Or you can consider downloading and compiling sew from the git repo.

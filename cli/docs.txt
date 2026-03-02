@@ -1,0 +1,274 @@
+# lines
+    
+  Returns: transformer
+   
+  Overloads:
+    (predicate: predicate, transformer: transformer)
+    (transformer: transformer)
+
+  Flags:
+    
+  
+  Description:
+    For each line that matches the predicate apply the supplied transformer to it. If no predicate is supplied apply to every line instead.
+
+# split
+    
+  Returns: transformer
+   
+  Overloads:
+    (separator: string = "\n")
+
+  Flags:
+    
+  
+  Description:
+    Split the string using the provided splitter
+
+# join
+    
+  Returns: transformer
+   
+  Overloads:
+    (joiner: string = "\n")
+
+  Flags:
+    
+  
+  Description:
+    Join the string with the provided joiner.
+
+# lower
+    
+  Returns: transformer
+   
+  Overloads:
+    
+
+  Flags:
+    
+  
+  Description:
+    Convert the string to lowercase
+
+# upper
+    
+  Returns: transformer
+   
+  Overloads:
+    
+
+  Flags:
+    
+  
+  Description:
+    Convert the string to uppercase
+
+# escape
+    
+  Returns: transformer
+   
+  Overloads:
+    ()
+
+  Flags:
+    
+  
+  Description:
+    Escape the string
+
+# trim
+    
+  Returns: transformer
+   
+  Overloads:
+    (trimCharacters: string = null)
+
+  Flags:
+    
+  
+  Description:
+    Trim all characters provided in the input from the string. Trims whitespace by default.
+
+# trimL, trimLeft, trimStart
+    
+  Returns: transformer
+   
+  Overloads:
+    (trimCharacters: string = null)
+
+  Flags:
+    
+  
+  Description:
+    Trim all characters provided from the start of the string. Trims whitespace by default.
+
+# trimR, trimRight, trimEnd
+    
+  Returns: transformer
+   
+  Overloads:
+    (trimCharacters: string = null)
+
+  Flags:
+    
+  
+  Description:
+    Trim all characters provided from the end of the string. Trims whitespace by default.
+
+# quote, quoted
+    
+  Returns: transformer
+   
+  Overloads:
+    (quoteCharacter: string = "")
+
+  Flags:
+    
+  
+  Description:
+    Surround the string in quotes.
+
+# embed
+    
+  Returns: transformer
+   
+  Overloads:
+    (start: string = null, end: string = null)
+
+  Flags:
+    
+  
+  Description:
+    Embed the string between start and end
+
+# tag
+    
+  Returns: transformer
+   
+  Overloads:
+    (tag: string = null)
+
+  Flags:
+    newline: boolean = false
+  
+  Description:
+    Surround the string in HTML tags. If the newline flag is set.
+
+# append
+    
+  Returns: transformer
+   
+  Overloads:
+    (other: string = null)
+
+  Flags:
+    
+  
+  Description:
+    Append the provided string after the source string.
+
+# appendL, appendLeft, appendStart
+    
+  Returns: transformer
+   
+  Overloads:
+    (other: string = null)
+
+  Flags:
+    
+  
+  Description:
+    Append the provided string before the source string.
+
+# indent
+    
+  Returns: transformer
+   
+  Overloads:
+    (indent: number = 4)
+
+  Flags:
+    
+  
+  Description:
+    Indent the source string by the provided amount.
+
+# empty, none
+    
+  Returns: predicate
+   
+  Overloads:
+    ()
+
+  Flags:
+    
+  
+  Description:
+    True for empty strings.
+
+# nonEmpty, some
+    
+  Returns: predicate
+   
+  Overloads:
+    ()
+
+  Flags:
+    
+  
+  Description:
+    True for non empty strings.
+
+# has, contains
+    
+  Returns: predicate
+   
+  Overloads:
+    (values: [...string] = [])
+
+  Flags:
+    lower: boolean = false
+    all: boolean = false
+  
+  Description:
+    True if the string contains the provided predicate.
+
+# starts, startsWith
+    
+  Returns: predicate
+   
+  Overloads:
+    (value: string = null)
+
+  Flags:
+    lower: boolean = false
+  
+  Description:
+    True if the string stars with the provided value.
+
+# ends, endsWith
+    
+  Returns: predicate
+   
+  Overloads:
+    (value: string = null)
+
+  Flags:
+    lower: boolean = false
+  
+  Description:
+    True if the string ends with the provided value.
+
+# eq, equals
+    
+  Returns: predicate
+   
+  Overloads:
+    (value: string = null)
+
+  Flags:
+    lower: boolean = false
+  
+  Description:
+    True if the string is the same as value

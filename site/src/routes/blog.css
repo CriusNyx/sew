@@ -1,0 +1,4 @@
+.sew code {
+  background-color: oklch(21% 0.006 285.885);
+  padding: calc(var(--spacing) * 1);
+}

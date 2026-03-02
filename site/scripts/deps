@@ -1,0 +1,9 @@
+#/bin/bash
+
+(
+  cd ../jsi
+  rm -rf bin
+  dotnet publish -c Release
+)
+
+deno install
