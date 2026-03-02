@@ -15,10 +15,7 @@ export const Route = createFileRoute("/docs")({
 });
 
 function RouteComponent() {
-  const methods = useMemo(
-    () => SewJSI.methods(),
-    [],
-  );
+  const methods = useMemo(() => SewJSI.methods(), []);
 
   const methodExamples = useMemo(
     () => _.groupBy(SewJSI.methodExamples(), (x) => x.MethodName),
@@ -51,11 +48,7 @@ function SewMethodView({ method, examples }: SewMethodViewProps) {
       <div className="h-0.5 w-full bg-accent my-2" />
       <div className="flex flex-col ml-5">
         {method.Overloads.map((x, i) => (
-          <SewOverloadView
-            key={`overload-${i}`}
-            method={method}
-            overload={x}
-          />
+          <SewOverloadView key={`overload-${i}`} method={method} overload={x} />
         ))}
       </div>
       <div className="flex flex-col">
@@ -89,20 +82,17 @@ function SewOverloadView({ method, overload }: SewOverloadViewProps) {
               {interleaveComponent(
                 [...overload.Args, ...method.OptionalArgs].map((x, i) => (
                   <span key={`arg-${i}`}>
-                    &ensp;<u>
-                      {x.Name}
-                    </u>:&nbsp;<span className="text-emerald-500/75">
+                    &ensp;<u>{x.Name}</u>:&nbsp;
+                    <span className="text-emerald-500/75">
                       {x.TypeName}
 
-                      {x.DefaultValue && (
-                        <>
-                          &nbsp;=&nbsp;{x.DefaultValue}
-                        </>
-                      )}
+                      {x.DefaultValue && <>&nbsp;=&nbsp;{x.DefaultValue}</>}
                     </span>
                   </span>
                 )),
-                () => <span>,&nbsp;</span>,
+                () => (
+                  <span>,&nbsp;</span>
+                ),
               )}
               &ensp;)
             </>

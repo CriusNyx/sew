@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 export function useRefCallback<const T extends any[], U>(
   func: (...args: T) => U,
 ): (...args: T) => U {
-  const ref = useRef<((...args: T) => U)>(func);
+  const ref = useRef<(...args: T) => U>(func);
 
   useEffect(() => {
     ref.current = func;

@@ -14,4 +14,5 @@ function methodExamples() {
 export const SewJSI = {
   methods,
   methodExamples,
+  analyzeSemantics: sewJSI.AnalyzeSemantics,
 };

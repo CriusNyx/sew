@@ -1,8 +1,23 @@
 @import "tailwindcss";
 
+@source inline("text-semantic-none");
+@source inline("text-semantic-keyword");
+@source inline("text-semantic-method");
+@source inline("text-semantic-identifier");
+@source inline("text-semantic-numLit");
+@source inline("text-semantic-regexLit");
+@source inline("text-semantic-stringLit");
+
 @theme {
   --color-accent: oklch(69.6% 0.17 162.48);
   --color-accent-active: oklch(52.7% 0.154 150.069);
+  --color-semantic-none: white;
+  --color-semantic-keyword: oklch(62.3% 0.214 259.815);
+  --color-semantic-method: oklch(85.2% 0.199 91.936);
+  --color-semantic-identifier: oklch(74.6% 0.16 232.661);
+  --color-semantic-numLit: oklch(79.2% 0.209 151.711);
+  --color-semantic-regexLit: oklch(70.4% 0.191 22.216);
+  --color-semantic-stringLit: oklch(75% 0.183 55.934);
 }
 
 .root {
@@ -35,26 +50,10 @@ li {
   background-blend-mode: multiply;
 
   background-image:
-    linear-gradient(
-      to bottom left,
-      white,
-      oklch(40.8% 0.153 2.432)
-    ),
-    linear-gradient(
-    to bottom right,
-    white,
-    oklch(74.6% 0.16 232.661)
-  ),
-    linear-gradient(
-    to top right,
-    white,
-    oklch(52.7% 0.154 150.069)
-  ),
-    linear-gradient(
-    to top left,
-    white,
-    black
-  );
+    linear-gradient(to bottom left, white, oklch(40.8% 0.153 2.432)),
+    linear-gradient(to bottom right, white, oklch(74.6% 0.16 232.661)),
+    linear-gradient(to top right, white, oklch(52.7% 0.154 150.069)),
+    linear-gradient(to top left, white, black);
 }
 
 a:not(.sew) {
@@ -95,7 +94,7 @@ h3 {
 }
 
 h4 {
-  font-size: 2.0em;
+  font-size: 2em;
 }
 
 h5 {
@@ -106,7 +105,14 @@ h6 {
   font-size: 1.2em;
 }
 
-h1, h2, h3, h4, h5, h6, p, ul {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul {
   margin-bottom: 1rem;
 }
 
@@ -142,7 +148,9 @@ button:focus-visible {
   }
 }
 
-.fira-mono, pre, code {
+.fira-mono,
+pre,
+code {
   font-family: "Fira Mono", monospace;
   font-weight: 400;
   font-style: normal;

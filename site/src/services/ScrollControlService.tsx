@@ -25,19 +25,15 @@ const ScrollControlContext = createContext<ScrollControlContextState>({
 export function ScrollControlService(props: PropsWithChildren) {
   const [scrollLocks, setScrollLocks] = useState<number[]>([]);
 
-  const registerLockScroll = useRefCallback(
-    function registerLockScroll() {
-      const next = (_.max(scrollLocks) ?? -1) + 1;
-      setScrollLocks((prev) => [...prev, next]);
-      return next;
-    },
-  );
+  const registerLockScroll = useRefCallback(function registerLockScroll() {
+    const next = (_.max(scrollLocks) ?? -1) + 1;
+    setScrollLocks((prev) => [...prev, next]);
+    return next;
+  });
 
-  const freeLockScroll = useRefCallback(
-    function freeLockScroll(value: number) {
-      setScrollLocks((prev) => prev.filter((x) => x !== value));
-    },
-  );
+  const freeLockScroll = useRefCallback(function freeLockScroll(value: number) {
+    setScrollLocks((prev) => prev.filter((x) => x !== value));
+  });
 
   return (
     <ScrollControlContext.Provider

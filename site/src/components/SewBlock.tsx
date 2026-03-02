@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAsyncMemo } from "use-async-memo";
 import { sewJSI } from "sewjs/main.ts";
 import { Copy } from "react-feather";
+import { SewColored, SewInput } from "./SewInput.tsx";
 
 export interface SewBlockProps {
   input?: string;
@@ -19,13 +20,14 @@ interface SewTextViewProps {
 export function SewTextView(props: SewTextViewProps) {
   return (
     <div className="flex flex-1 relative grow shrink overflow-hidden">
-      <pre className="text-sm bg-zinc-900 flex-1 p-4 rounded-xl overflow-scroll">{props.text.join('\n')}</pre>
-      {props.copyButton &&
-        (
-          <button className="absolute top-2 right-2 bg-transparent!">
-            <Copy />
-          </button>
-        )}
+      <pre className="text-sm bg-zinc-900 flex-1 p-4 rounded-xl overflow-scroll">
+        {props.text.join("\n")}
+      </pre>
+      {props.copyButton && (
+        <button className="absolute top-2 right-2 bg-transparent!">
+          <Copy />
+        </button>
+      )}
     </div>
   );
 }
@@ -65,37 +67,33 @@ export function SewBlock(props: SewBlockProps) {
           props.fullSize ? "flex-1" : "max-h-100"
         }`}
       >
-        {props.editableInput && (
-              <SewTextInput text={input} onChange={setInput} />
-            ) || (
-          <SewTextView
-            text={[input]}
-          />
-        )}
+        {(props.editableInput && (
+          <SewTextInput text={input} onChange={setInput} />
+        )) || <SewTextView text={[input]} />}
         <SewTextView
           copyButton
-          text={result && (result.hasValue ? result.value : [result.error]) ||
-            []}
+          text={
+            (result && (result.hasValue ? result.value : [result.error])) || []
+          }
         />
       </div>
       <div className="flex shrink flex-row items-center p-2 px-4 bg-zinc-900 rounded-xl">
         {!props.static && (
           <>
             <span>Program:&nbsp;&nbsp;</span>
-            <input
-              className="flex flex-1 outline-0 bg-zinc-900 px-2 fira-mono"
+
+            <SewInput
+              className="flex flex-1 outline-0 bg-zinc-900 fira-mono"
               placeholder="Sew program source code"
               value={sewProgram}
-              onChange={(e) => setSewProgram(e.target.value)}
+              onChange={(value) => setSewProgram(value)}
             />
           </>
         )}
         {props.static && (
           <>
             <span>Program:&nbsp;&nbsp;</span>
-            <pre className="flex flex-1 outline-0 px-2">
-              {sewProgram}
-            </pre>
+            <SewColored text={props.program ?? ""} />
           </>
         )}
       </div>

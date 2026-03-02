@@ -15,9 +15,7 @@ function RouteComponent() {
         <div className="flex flex-row gap-5 items-center p-2 px-5 bg-zinc-900 rounded-2xl">
           <a href={"https://github.com/CriusNyx/sew/"}>Install Sew</a>
           &#x25cf;
-          <Link to={"/blog"}>
-            Introduction to Sew
-          </Link>
+          <Link to={"/blog"}>Introduction to Sew</Link>
           &#x25cf;
           <Link to={"/docs"}>Docs</Link>
         </div>

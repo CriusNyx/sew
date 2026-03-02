@@ -7,10 +7,7 @@ import type { AppService } from "./services/types.ts";
 import { ScrollControlService } from "./services/ScrollControlService.tsx";
 
 function App() {
-  const [services] = useState<AppService[]>([
-    ScrollControlService,
-    MDXService,
-  ]);
+  const [services] = useState<AppService[]>([ScrollControlService, MDXService]);
 
   return (
     <>

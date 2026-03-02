@@ -6,15 +6,14 @@ export function interleaveComponent(
 ) {
   let interleaveIndex = 0;
   return elements.reduce(
-    (
-      prev: React.ReactNode[],
-      curr,
-    ) =>
-      prev.length === 0 ? [curr] : [
-        ...prev,
-        <Interleave key={`interleave-${interleaveIndex++}`} />,
-        curr,
-      ],
+    (prev: React.ReactNode[], curr) =>
+      prev.length === 0
+        ? [curr]
+        : [
+            ...prev,
+            <Interleave key={`interleave-${interleaveIndex++}`} />,
+            curr,
+          ],
     [],
   );
 }

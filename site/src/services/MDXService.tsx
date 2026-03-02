@@ -1,8 +1,9 @@
 import type { PropsWithChildren } from "react";
 import { MDXProvider } from "@mdx-js/react";
 import { SewBlock } from "../components/SewBlock.tsx";
-import { SewExample } from "../components/SewExample.tsx";
+import { SewExample, SewSnippet } from "../components/SewExample.tsx";
 import { Link } from "@tanstack/react-router";
+import { SewColored } from "../components/SewInput.tsx";
 
 function CustomH3(props: PropsWithChildren) {
   return (
@@ -19,6 +20,8 @@ export function MDXService(props: PropsWithChildren) {
       components={{
         SewBlock,
         SewExample,
+        SewColored,
+        SewSnippet,
         Link,
         h3: CustomH3,
       }}
