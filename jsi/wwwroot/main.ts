@@ -14,6 +14,24 @@ export type JSIResult = {
   value: string[];
 } | { hasValue: false; error: string };
 
+const semanticTypes = [
+  "none",
+  "keyword",
+  "method",
+  "identifier",
+  "numLit",
+  "regexLit",
+  "stringLit",
+] as const;
+
+export type SemanticType = typeof semanticTypes[number];
+
+export interface SemanticToken {
+  Start: number;
+  Length: number;
+  SemanticType: SemanticType;
+}
+
 const config = getConfig();
 const exports = await getAssemblyExports(config.mainAssemblyName);
 
@@ -29,6 +47,11 @@ export const sewJSI = {
   MethodExamples(): any[] {
     const result = exports.SewJSI.MethodExamples();
     return JSON.parse(result);
+  },
+  AnalyzeSemantics(program: string): SemanticToken[] {
+    return JSON.parse(
+      exports.SewJSI.AnalyzeSemantics(program),
+    ) as SemanticToken[];
   },
 };
 

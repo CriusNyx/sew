@@ -1,4 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices.JavaScript;
 using System.Text.Json;
@@ -26,11 +27,28 @@ public class JSIResult
   }
 }
 
-[JsonSourceGenerationOptions(WriteIndented = true)]
+[JsonSourceGenerationOptions(
+  WriteIndented = true,
+  Converters = [typeof(JsonStringEnumConverter<SemanticType>)]
+)]
 [JsonSerializable(typeof(JSIResult))]
 [JsonSerializable(typeof(SewMethod[]))]
 [JsonSerializable(typeof(SewExample[]))]
+[JsonSerializable(typeof(JSISemanticToken[]))]
 internal partial class JSIGenerationContext : JsonSerializerContext { }
+
+public class JSISemanticToken(int start, int length, SemanticType semanticType)
+{
+  public int Start => start;
+  public int Length => length;
+  public SemanticType SemanticType => semanticType;
+
+  public static JSISemanticToken From(SemanticToken token)
+  {
+    var span = token.Token.Span;
+    return new JSISemanticToken(span.Position.Absolute, span.Length, token.Type);
+  }
+}
 
 partial class SewJSI
 {
@@ -61,6 +79,39 @@ partial class SewJSI
     return JsonSerializer.Serialize(
       SewExamples.GenerateExamples(),
       typeof(SewExample[]),
+      JSIGenerationContext.Default
+    );
+  }
+
+  [JSExport]
+  internal static string AnalyzeSemantics(string sewProgram)
+  {
+    var result = SewLang
+      .Tokenize(sewProgram)
+      .Map(tokens => tokens.Select(SemanticToken.From).Select(JSISemanticToken.From).ToList())
+      .UnwrapOr(new List<JSISemanticToken>());
+
+    for (var i = 0; i < result.Count; i++)
+    {
+      var value = result[i];
+      var next = result.Safe(i + 1);
+      var end = value.Start + value.Length;
+      if (next == null)
+      {
+        if (end != sewProgram.Length)
+        {
+          result.Add(new JSISemanticToken(end, sewProgram.Length - end, SemanticType.none));
+        }
+      }
+      else if (end != next.Start)
+      {
+        result.Insert(i + 1, new JSISemanticToken(end, next.Start - end, SemanticType.none));
+      }
+    }
+
+    return JsonSerializer.Serialize(
+      result.ToArray(),
+      typeof(JSISemanticToken[]),
       JSIGenerationContext.Default
     );
   }
