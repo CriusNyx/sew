@@ -13,7 +13,7 @@ const RootLayout = () => {
       <div className="flex flex-col self-center items-center w-300 max-w-[95vw] p-5">
         <Link className="sew" to="/">
           <h1 className="flex relative flex-row items-center gap-5 pointer-none no-underline! mb-0! title">
-            <img className="w-20 h-20" src="/SewIcon.png" />Sew
+            <img className="w-20 h-20" src="SewIcon.png" />Sew
           </h1>
         </Link>
         <div className="flex flex-row gap-5 self-start">
