@@ -535,8 +535,8 @@ public static class SewRuntime
         [
           new SewOverload(
             "Embed the input between the start and end strings",
-            new StringArg("start", "string", "null"),
-            new StringArg("end", "string", "null")
+            new StringArg("start", "null"),
+            new StringArg("end", "null")
           ),
         ],
         [],
@@ -598,7 +598,7 @@ public static class SewRuntime
           new SewOverload(
             "Apply the transformer to any string that matches the filter.",
             new FilterArg("filter"),
-            new TransformerArg("transformer", "transformer")
+            new TransformerArg("transformer")
           ),
         ],
         [],
@@ -627,7 +627,7 @@ public static class SewRuntime
             new SewArg("values", "...string", "[]")
           ),
         ],
-        [new SewArg("lower", "boolean", "false"), new SewArg("all", "boolean", "false")],
+        [new FlagArg("lower"), new FlagArg("all")],
         new PredicateFunc(Has)
       ),
       new SewMethod(
@@ -639,7 +639,7 @@ public static class SewRuntime
             new StringArg("value", "string", "null")
           ),
         ],
-        [new SewArg("lower", "boolean", "false")],
+        [new FlagArg("lower")],
         FromStringBasedPredicateInsensitive((x, y) => x.StartsWith(y))
       ),
       new SewMethod(
@@ -651,7 +651,7 @@ public static class SewRuntime
             new SewArg("value", "string", "null")
           ),
         ],
-        [new SewArg("lower", "boolean", "false")],
+        [new FlagArg("lower")],
         FromStringBasedPredicateInsensitive((x, y) => x.EndsWith(y))
       ),
       new SewMethod(
