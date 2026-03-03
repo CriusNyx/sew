@@ -17,17 +17,30 @@ interface SewTextViewProps {
   copyButton?: boolean;
 }
 
-export function SewTextView(props: SewTextViewProps) {
+export function SewTextContainer(props: SewTextViewProps) {
   return (
-    <div className="flex flex-1 fira-mono relative grow shrink overflow-hidden">
-      <pre className="text-sm bg-zinc-900 flex-1 p-4 rounded-xl overflow-scroll whitespace-pre">
-        {props.text.join("\n")}
-      </pre>
+    <div className="flex flex-1 fira-mono relative grow shrink overflow-hidden text-sm fira-mono bg-zinc-900 rounded-2xl p-4">
+      <div className="w-full overflow-scroll">
+        <SewTextView text={props.text} />
+      </div>
       {props.copyButton && (
         <button className="absolute top-2 right-2 bg-transparent!">
           <Copy />
         </button>
       )}
+    </div>
+  );
+}
+
+export function SewTextView(props: { text: string[] }) {
+  if (props.text.length === 1) {
+    return <pre className="">{props.text[0]}</pre>;
+  }
+  return (
+    <div className="flex flex-col p-2 gap-2">
+      {props.text.map((x) => (
+        <pre className="p-2 rounded-md bg-zinc-950 min-h-[2em]">{x}</pre>
+      ))}
     </div>
   );
 }
@@ -69,8 +82,8 @@ export function SewBlock(props: SewBlockProps) {
       >
         {(props.editableInput && (
           <SewTextInput text={input} onChange={setInput} />
-        )) || <SewTextView text={[input]} />}
-        <SewTextView
+        )) || <SewTextContainer text={[input]} />}
+        <SewTextContainer
           copyButton
           text={
             (result && (result.hasValue ? result.value : [result.error])) || []
