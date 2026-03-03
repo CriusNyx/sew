@@ -12,9 +12,9 @@ export function SewExample(props: SewExampleProps) {
   const [open, setOpen] = useState(false);
   return (
     <>
-      <div className={`flex flex-col pointer bg-zinc-900 mb-4`}>
+      <div className={`flex flex-col bg-zinc-900 mb-4`}>
         <span
-          className="flex flex-row items-center p-2"
+          className="flex flex-row items-center p-2 cursor-pointer"
           onClick={() => setOpen(!open)}
         >
           {open ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
