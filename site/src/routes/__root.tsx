@@ -24,7 +24,9 @@ const RootLayout = () => {
           <Link to={"/docs"}>Docs</Link>
         </div>
       </div>
-      <div className="flex flex-col self-center items-start overflow-scroll px-5 grow h-full">
+      <div
+        className={`flex flex-col self-center items-start px-5 grow h-full ${isScrollLocked ? "" : "overflow-hidden"}`}
+      >
         <div className="flex flex-col rounded-xl w-300 max-w-[95vw] bg-black/50 p-5 px-10 mb-5 h-full">
           <Outlet />
         </div>

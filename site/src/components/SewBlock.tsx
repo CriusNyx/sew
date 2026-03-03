@@ -71,24 +71,29 @@ export function SewBlock(props: SewBlockProps) {
 
   return (
     <div
-      className={`flex flex-col gap-2 pb-4 items-stretch ${
-        props.fullSize ? "h-full" : ""
+      className={`flex flex-col gap-4 pb-4 items-stretch ${
+        props.fullSize ? "h-full shrink" : ""
       }`}
     >
       <div
-        className={`flex flex-col lg:flex-row gap-2 shrink ${
-          props.fullSize ? "flex-1" : "max-h-100"
+        className={`flex shrink relative ${
+          props.fullSize ? "flex-1 max-h-full" : "h-100"
         }`}
       >
-        {(props.editableInput && (
-          <SewTextInput text={input} onChange={setInput} />
-        )) || <SewTextContainer text={[input]} />}
-        <SewTextContainer
-          copyButton
-          text={
-            (result && (result.hasValue ? result.value : [result.error])) || []
-          }
-        />
+        <div
+          className={`absolute top-0 bottom-0 left-0 right-0 flex lg:flex-row gap-4`}
+        >
+          {(props.editableInput && (
+            <SewTextInput text={input} onChange={setInput} />
+          )) || <SewTextContainer text={[input]} />}
+          <SewTextContainer
+            copyButton
+            text={
+              (result && (result.hasValue ? result.value : [result.error])) ||
+              []
+            }
+          />
+        </div>
       </div>
       <div className="flex shrink flex-row items-center p-2 px-4 bg-zinc-900 rounded-xl">
         {!props.static && (
