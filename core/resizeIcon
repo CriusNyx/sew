@@ -5,3 +5,6 @@ magick SewIcon.png -resize 64x64\! SewIcon64.png
 magick SewIcon.png -resize 128x128\! SewIcon128.png
 magick SewIcon.png -resize 256x256\! SewIcon256.png
 magick SewIcon.png -resize 512x512\! SewIcon512.png
+
+cp SewIcon.png ../site/public/SewIcon.png
+cp SewIcon.png ../site/src/graphics/SewIcon.png
