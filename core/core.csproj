@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
-    <PackageReference Include="CriusNyx.Result" Version="0.0.9" />
+    <PackageReference Include="CriusNyx.Result" Version="0.0.11" />
     <PackageReference Include="CriusNyxUtil" Version="0.0.25" />
     <PackageReference Include="Microsoft.JavaScript.NodeApi" Version="0.9.19" />
     <PackageReference Include="Microsoft.JavaScript.NodeApi.Generator" Version="0.9.19" />

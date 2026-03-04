@@ -7,10 +7,12 @@ public class State
   public Sharpie.Event? currentSharpieEvent { get; private set; }
   public ReplEvent? currentAppEvent { get; private set; }
   public string textInput { get; private set; } = "";
-  public Result<SewLangOutput, SewLangException>? lastSewResult { get; private set; } = null;
+  public Option<Result<SewLangOutput, SewLangException>> lastSewResult { get; private set; } =
+    Option.None();
   public string sewInput { get; private set; } = "";
-  public int inputPosition { get; private set; } = 0;
-  public Span? selection { get; private set; } = null;
+  public int codeInputScrollPosition { get; private set; } = 0;
+  public int codeInputCursorPosition { get; private set; } = 0;
+  public Option<Span> selection { get; private set; } = Option.None();
   public bool ShowDebugLine { get; private set; } = false;
   public bool ShowAST { get; private set; } = false;
   public int scroll { get; private set; } = 0;
@@ -60,7 +62,7 @@ public class State
       }
     )
     {
-      lastSewResult = result;
+      lastSewResult = Option.Some(result);
     }
   }
 
@@ -92,48 +94,48 @@ public class State
 
   private void Type(char character)
   {
-    sewInput = sewInput.Insert(inputPosition, character.ToString());
-    inputPosition++;
+    sewInput = sewInput.Insert(codeInputCursorPosition, character.ToString());
+    codeInputCursorPosition++;
   }
 
   private void Backspace()
   {
-    if (sewInput.Length > 0 && inputPosition > 0)
+    if (sewInput.Length > 0 && codeInputCursorPosition > 0)
     {
-      sewInput = sewInput.Remove(inputPosition - 1, 1);
-      inputPosition--;
+      sewInput = sewInput.Remove(codeInputCursorPosition - 1, 1);
+      codeInputCursorPosition--;
     }
   }
 
   private void BackspaceWord()
   {
     var startPosition = JumpLeftIndex();
-    sewInput = sewInput.Remove(startPosition, inputPosition - startPosition);
-    inputPosition = startPosition;
+    sewInput = sewInput.Remove(startPosition, codeInputCursorPosition - startPosition);
+    codeInputCursorPosition = startPosition;
   }
 
   private void Delete()
   {
-    if (inputPosition < sewInput.Length)
+    if (codeInputCursorPosition < sewInput.Length)
     {
-      sewInput = sewInput.Remove(inputPosition, 1);
+      sewInput = sewInput.Remove(codeInputCursorPosition, 1);
     }
   }
 
   private void MoveCursor(int distance)
   {
-    inputPosition += distance;
-    inputPosition = Math.Clamp(inputPosition, 0, sewInput.Length);
+    codeInputCursorPosition += distance;
+    codeInputCursorPosition = Math.Clamp(codeInputCursorPosition, 0, sewInput.Length);
   }
 
   private void CursorHome()
   {
-    inputPosition = 0;
+    codeInputCursorPosition = 0;
   }
 
   private void CursorEnd()
   {
-    inputPosition = sewInput.Length;
+    codeInputCursorPosition = sewInput.Length;
   }
 
   public void Scroll(int amount)
@@ -143,7 +145,7 @@ public class State
 
   private int JumpLeftIndex()
   {
-    var index = inputPosition - 1;
+    var index = codeInputCursorPosition - 1;
 
     while (index >= 0 && !char.IsAsciiLetterOrDigit(sewInput[index]))
     {
@@ -161,12 +163,12 @@ public class State
 
   private void JumpLeft()
   {
-    inputPosition = JumpLeftIndex();
+    codeInputCursorPosition = JumpLeftIndex();
   }
 
   private int JumpRightIndex()
   {
-    var index = inputPosition;
+    var index = codeInputCursorPosition;
     while (index >= 0 && index < sewInput.Length && char.IsAsciiLetterOrDigit(sewInput[index]))
     {
       index++;
@@ -182,7 +184,7 @@ public class State
 
   private void JumpRight()
   {
-    inputPosition = JumpRightIndex();
+    codeInputCursorPosition = JumpRightIndex();
   }
 
   public static State From(ReplConfig config)

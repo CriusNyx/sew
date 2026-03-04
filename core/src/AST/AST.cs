@@ -41,7 +41,7 @@ public static class ASTExtensions
     {
       return left.Zip(right).All((pair) => pair.First.ASTEquivalent(pair.Second, errors));
     }
-    errors.Add(new ASTEquivalentError(null, null, "Lengths do not match"));
+    errors.Add(new ASTEquivalentError(null!, null!, "Lengths do not match"));
     return false;
   }
 }

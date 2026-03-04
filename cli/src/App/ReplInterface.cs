@@ -53,41 +53,8 @@ public class ReplInterface(Repl repl, Terminal terminal)
     DrawBody(body);
 
     inputLine.Window().Touch(DrawInputLine);
-    DrawBottom(bottomView);
+    DrawStatusLine(bottomView);
     terminal.Screen.Refresh();
-  }
-
-  public void DrawInputLine(IWindow window)
-  {
-    var caret = window.CaretLocation;
-    window.WriteText(state.sewInput);
-    var endOfInput = window.CaretLocation;
-
-    var tokensResult = SewLang.Tokenize(state.sewInput);
-    tokensResult.Inspect(
-      (tokens) =>
-        tokens
-          .Select(SemanticToken.From)
-          .Foreach(
-            (semantic) =>
-            {
-              DrawSemanticToken(window, caret, semantic);
-            }
-          )
-    );
-
-    window.CaretLocation = endOfInput;
-
-    if (state.inputPosition >= 0 && state.inputPosition < state.sewInput.Length)
-    {
-      var cursorChar = state.sewInput[state.inputPosition];
-      window.CaretLocation = new(state.inputPosition, 0);
-      window.WriteText(cursorChar.ToString(), new Style { ColorMixture = cursorColor });
-    }
-    else
-    {
-      window.WriteText(" ", new Style { ColorMixture = cursorColor });
-    }
   }
 
   public void DrawSemanticToken(IWindow window, Point caret, SemanticToken token)
@@ -139,11 +106,12 @@ public class ReplInterface(Repl repl, Terminal terminal)
     var window = view.Window();
     window.Clear();
 
-    var evaluationResult = state.lastSewResult;
-    if (evaluationResult == null)
+    if (state.lastSewResult.IsNone())
     {
       return;
     }
+    var evaluationResult = state.lastSewResult.Unwrap();
+
     if (evaluationResult.IsErr())
     {
       var err = evaluationResult.Err().Unwrap();
@@ -166,6 +134,80 @@ public class ReplInterface(Repl repl, Terminal terminal)
     catch (Exception exception)
     {
       DrawTextWithScroll(window, Point.Empty, exception.ToString());
+    }
+  }
+
+  public void DrawInputLine(IWindow window)
+  {
+    var caret = window.CaretLocation;
+    window.WriteText(state.sewInput);
+    var endOfInput = window.CaretLocation;
+
+    var tokensResult = SewLang.Tokenize(state.sewInput);
+    tokensResult.Inspect(
+      (tokens) =>
+        tokens
+          .Select(SemanticToken.From)
+          .Foreach(
+            (semantic) =>
+            {
+              DrawSemanticToken(window, caret, semantic);
+            }
+          )
+    );
+
+    window.CaretLocation = endOfInput;
+
+    if (state.codeInputCursorPosition >= 0 && state.codeInputCursorPosition < state.sewInput.Length)
+    {
+      var cursorChar = state.sewInput[state.codeInputCursorPosition];
+      window.CaretLocation = new(state.codeInputCursorPosition, 0);
+      window.WriteText(cursorChar.ToString(), new Style { ColorMixture = cursorColor });
+    }
+    else
+    {
+      window.WriteText(" ", new Style { ColorMixture = cursorColor });
+    }
+  }
+
+  public void DrawStatusLine(View view)
+  {
+    view.Window().Clear();
+    if (state.ShowDebugLine)
+    {
+      DrawDebugLine(view);
+    }
+    else
+    {
+      DrawHotkeys(view);
+    }
+  }
+
+  public void DrawDebugLine(View view)
+  {
+    var window = view.Window();
+    window.WriteText(state.currentSharpieEvent?.ToEventString() ?? "");
+    window.WriteText("\n");
+    window.WriteText(state.currentAppEvent?.Debug() ?? "");
+  }
+
+  public void DrawHotkeys(View view)
+  {
+    var window = view.Window();
+    foreach (var hotkey in repl.hotkeys)
+    {
+      hotkey.Draw(repl, window, invertedColor);
+    }
+  }
+
+  #region  Helpers
+  public void DrawTextWithScroll(IWindow window, Point point, string source)
+  {
+    var lines = source.Split("\n");
+    foreach (var (line, index) in lines.WithIndex())
+    {
+      var p = new Point(point.X, point.Y + index - state.scroll);
+      DrawAtLocation(window, p, (win) => win.WriteText(line, false));
     }
   }
 
@@ -197,16 +239,6 @@ public class ReplInterface(Repl repl, Terminal terminal)
     }
   }
 
-  public void DrawTextWithScroll(IWindow window, Point point, string source)
-  {
-    var lines = source.Split("\n");
-    foreach (var (line, index) in lines.WithIndex())
-    {
-      var p = new Point(point.X, point.Y + index - state.scroll);
-      DrawAtLocation(window, p, (win) => win.WriteText(line, false));
-    }
-  }
-
   public void DrawAtLocation(IWindow window, Point point, Action<IWindow> action)
   {
     if (window.Size.Contains(point))
@@ -215,36 +247,7 @@ public class ReplInterface(Repl repl, Terminal terminal)
       action(window);
     }
   }
-
-  public void DrawBottom(View view)
-  {
-    view.Window().Clear();
-    if (state.ShowDebugLine)
-    {
-      DrawDebugLine(view);
-    }
-    else
-    {
-      DrawLines(view);
-    }
-  }
-
-  public void DrawDebugLine(View view)
-  {
-    var window = view.Window();
-    window.WriteText(state.currentSharpieEvent?.ToEventString() ?? "");
-    window.WriteText("\n");
-    window.WriteText(state.currentAppEvent?.Debug() ?? "");
-  }
-
-  public void DrawLines(View view)
-  {
-    var window = view.Window();
-    foreach (var hotkey in repl.hotkeys)
-    {
-      hotkey.Draw(repl, window, invertedColor);
-    }
-  }
+  #endregion
 
   public static ReplInterface CreateAndInitialize(Repl repl, Terminal terminal)
   {
