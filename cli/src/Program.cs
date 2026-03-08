@@ -68,7 +68,7 @@ void StartApp(CLIOptions opts)
 
   if (inputResult.IsErr())
   {
-    var error = inputResult.Err().Unwrap();
+    var error = inputResult.UnwrapErr();
     Console.WriteLine(error.FormatError(true));
     return;
   }

@@ -21,5 +21,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\core\core.csproj" />
+    <ProjectReference Include="..\Yoga.NET\src\Yoga.NET\Yoga.NET.csproj" />
   </ItemGroup>
 </Project>
