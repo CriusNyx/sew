@@ -5,8 +5,8 @@
   "tasks": {
     "dev": "deno run --allow-env --allow-read --allow-sys --allow-ffi --allow-run --allow-write --allow-net npm:vite",
     "build": "deno run deps && vite build && cp ../jsi/bin/Release/net10.0/publish/wwwroot/_framework/* ./dist/assets",
-    "build:gh": "VITE_BASE_PATH=/ deno run build",
-    "build:cloudflare": "VITE_BASE_PATH=/ deno run build",
+    "build:gh": "VITE_BASE_PATH=/ VITE_PLATFORM=github deno run build",
+    "build:cloudflare": "VITE_BASE_PATH=/ VITE_PLATFORM=cloudflare deno run build",
     "lint": "eslint .",
     "preview": "vite preview",
     "deps": "bash scripts/deps"
