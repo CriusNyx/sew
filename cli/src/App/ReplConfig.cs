@@ -1,3 +1,5 @@
+using CriusNyx.Results;
+
 namespace Sew.CLI;
 
 /// <summary>
@@ -8,5 +10,5 @@ public class ReplConfig
   /// <summary>
   /// Initial input for the sew program.
   /// </summary>
-  public string? Input;
+  public Option<string> Input = Option.None();
 }

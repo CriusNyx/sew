@@ -1,4 +1,5 @@
 using System.Drawing;
+using CriusNyx.Results.Extensions;
 using CriusNyx.Util;
 using Sharpie;
 using Sharpie.Abstractions;
@@ -41,7 +42,7 @@ public class ReplInterface(Repl repl, Terminal terminal)
 
   public void DrawInterface(Terminal terminal)
   {
-    if (state.currentAppEvent?.type == ReplEventType.Resize)
+    if (state.currentAppEvent.UnwrapOrNull()?.type == ReplEventType.Resize)
     {
       terminal.Screen.Clear();
     }
@@ -186,7 +187,7 @@ public class ReplInterface(Repl repl, Terminal terminal)
   public void DrawDebugLine(View view)
   {
     var window = view.Window();
-    window.WriteText(state.currentSharpieEvent?.ToEventString() ?? "");
+    window.WriteText(state.currentSharpieEvent.UnwrapOrDefault()?.ToEventString() ?? "");
     window.WriteText("\n");
     window.WriteText(state.currentAppEvent?.Debug() ?? "");
   }

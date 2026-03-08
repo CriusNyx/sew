@@ -1,4 +1,3 @@
-using CommandLine;
 using CriusNyx.Results;
 using CriusNyx.Util;
 using Superpower;

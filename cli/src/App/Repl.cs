@@ -179,17 +179,20 @@ public class Repl
 
       ProcessSewInput(state.sewInput);
 
-      if (state.currentAppEvent?.type == ReplEventType.Exit)
+      if (state.currentAppEvent.UnwrapOrDefault() is ReplEvent replEvent)
       {
-        return Exit(new ReplOutput(ReplOutputType.quit, state));
-      }
-      else if (state.currentAppEvent?.type == ReplEventType.WriteToFile)
-      {
-        return Exit(new ReplOutput(ReplOutputType.outputToFile, state));
-      }
-      else if (state.currentAppEvent?.type == ReplEventType.WriteToClipboard)
-      {
-        return Exit(new ReplOutput(ReplOutputType.outputToClipboard, state));
+        if (replEvent.type == ReplEventType.Exit)
+        {
+          return Exit(new ReplOutput(ReplOutputType.quit, state));
+        }
+        else if (replEvent.type == ReplEventType.WriteToFile)
+        {
+          return Exit(new ReplOutput(ReplOutputType.outputToFile, state));
+        }
+        else if (replEvent.type == ReplEventType.WriteToClipboard)
+        {
+          return Exit(new ReplOutput(ReplOutputType.outputToClipboard, state));
+        }
       }
 
       replInterface.DrawInterface(terminal);

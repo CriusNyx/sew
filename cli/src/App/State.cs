@@ -1,11 +1,12 @@
 using CriusNyx.Results;
+using CriusNyx.Results.Extensions;
 
 namespace Sew.CLI;
 
 public class State
 {
-  public Sharpie.Event? currentSharpieEvent { get; private set; }
-  public ReplEvent? currentAppEvent { get; private set; }
+  public Option<Sharpie.Event> currentSharpieEvent { get; private set; } = Option.None();
+  public Option<ReplEvent> currentAppEvent { get; private set; } = Option.None();
   public string textInput { get; private set; } = "";
   public Option<Result<SewLangOutput, SewLangException>> lastSewResult { get; private set; } =
     Option.None();
@@ -19,7 +20,7 @@ public class State
 
   public void ProcessEvent(ReplEvent appEvent, Sharpie.Event? currentSharpieEvent)
   {
-    this.currentSharpieEvent = currentSharpieEvent;
+    this.currentSharpieEvent = currentSharpieEvent.AsOption();
     this.currentAppEvent = appEvent;
 
     if (appEvent is { type: ReplEventType.TextInput })
@@ -189,6 +190,6 @@ public class State
 
   public static State From(ReplConfig config)
   {
-    return new State() { textInput = config.Input ?? "" };
+    return new State() { textInput = config.Input.UnwrapOr("") };
   }
 }

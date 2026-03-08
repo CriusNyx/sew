@@ -33,10 +33,9 @@ public class AppException
   }
 }
 
-public abstract class AppError
+public abstract class AppError : Exception
 {
   public abstract string Code { get; }
-  public abstract string Message { get; }
 
   public virtual string FormatError(bool chalk = false)
   {
