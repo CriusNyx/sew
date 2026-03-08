@@ -7,7 +7,7 @@ import { tanstackRouter } from "@tanstack/router-plugin/vite";
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: "https://criusnyx.github.io/sew/",
+  base: process.env.VITE_BASE_PATH || "/",
   plugins: [
     deno(),
     mdx({ providerImportSource: "@mdx-js/react" }),
