@@ -41,7 +41,7 @@ jobs:
         run: |
           cd site
           deno install
-          deno run build
+          deno run build:gh
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
