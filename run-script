@@ -6,7 +6,7 @@ rest=$@
 
 if test -f "./scripts/$first.sh"; then
   echo "Running $first"
-  bash "./scripts/$first.sh"
+  bash "./scripts/$first.sh" $@
 else
   echo "Unknown script. Run one of the following"
   echo ""
