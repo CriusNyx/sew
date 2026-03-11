@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SewBlock } from "../components/SewBlock.tsx";
-import { useLockScroll } from "../services/ScrollControlService.tsx";
+import { useLockScroll } from "../store/scroll.ts";
+import { useHideNavigation } from "../store/navigation.ts";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
@@ -8,6 +9,7 @@ export const Route = createFileRoute("/")({
 
 function RouteComponent() {
   useLockScroll();
+  useHideNavigation();
 
   return (
     <div className="flex flex-col h-full gap-5">

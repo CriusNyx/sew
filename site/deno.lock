@@ -22,6 +22,7 @@
     "npm:eslint-plugin-react-refresh@~0.4.24": "0.4.26_eslint@9.39.2",
     "npm:eslint@^9.39.1": "9.39.2",
     "npm:globals@^16.5.0": "16.5.0",
+    "npm:jotai@^2.18.1": "2.18.1_@types+react@19.2.14_react@19.2.4",
     "npm:lodash@^4.17.23": "4.17.23",
     "npm:react-dom@^19.2.0": "19.2.4_react@19.2.4",
     "npm:react-feather@^2.0.10": "2.0.10_react@19.2.4",
@@ -1669,6 +1670,17 @@
       "integrity": "sha512-ekilCSN1jwRvIbgeg/57YFh8qQDNbwDb9xT/qu2DAHbFFZUicIl4ygVaAvzveMhMVr3LnpSKTNnwt8PoOfmKhQ==",
       "bin": true
     },
+    "jotai@2.18.1_@types+react@19.2.14_react@19.2.4": {
+      "integrity": "sha512-e0NOzK+yRFwHo7DOp0DS0Ycq74KMEAObDWFGmfEL28PD9nLqBTt3/Ug7jf9ca72x0gC9LQZG9zH+0ISICmy3iA==",
+      "dependencies": [
+        "@types/react",
+        "react"
+      ],
+      "optionalPeers": [
+        "@types/react",
+        "react"
+      ]
+    },
     "js-tokens@4.0.0": {
       "integrity": "sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ=="
     },
@@ -2774,6 +2786,7 @@
       "npm:eslint-plugin-react-refresh@~0.4.24",
       "npm:eslint@^9.39.1",
       "npm:globals@^16.5.0",
+      "npm:jotai@^2.18.1",
       "npm:lodash@^4.17.23",
       "npm:react-dom@^19.2.0",
       "npm:react-feather@^2.0.10",
