@@ -23,6 +23,7 @@ const RootLayout = () => {
         {!navigationIsHidden && (
           <div className="flex flex-row gap-5 pt-2">
             <Link to={"/"}>Home</Link>
+            <a href={"https://github.com/CriusNyx/sew/"}>Github</a>
             <Link to={"/blog"}>Blog</Link>
             <Link to={"/docs"}>Docs</Link>
           </div>

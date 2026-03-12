@@ -15,7 +15,12 @@ function RouteComponent() {
     <div className="flex flex-col h-full gap-5">
       <div className="flex flex-row gap-5 justify-center">
         <div className="flex flex-row gap-5 items-center p-2 px-5 bg-zinc-900 rounded-2xl">
-          <a href={"https://github.com/CriusNyx/sew/"}>Install Sew</a>
+          <a
+            className="flex flex-row gap-2 items-center"
+            href={"https://github.com/CriusNyx/sew/"}
+          >
+            <img src="/GithubIcon.png" className="w-5 h-5" /> Install Sew
+          </a>
           &#x25cf;
           <Link to={"/blog"}>Introduction to Sew</Link>
           &#x25cf;
